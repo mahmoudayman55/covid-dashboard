@@ -27,7 +27,7 @@ class SummaryController extends GetxController {
 
 
 
-
+RxBool networkIssue=RxBool(false);
 
   getCountrySummary(
       String countryCode, String countrySlug, String countryName) async {
@@ -59,7 +59,7 @@ class SummaryController extends GetxController {
                 Duration(days: 10) &&
             element.countryName == countryName)
         .toList();
-
+    countryNewConfirmedBarGroups.clear();
 for(int i=1;i<countryNewConfirmedLastWeak.length;i++){
 
   countryNewConfirmedBarGroups
@@ -137,6 +137,7 @@ text="${element.date!.day.toString()}/${element.date!.month.toString()}";
             Duration(days: 6))
         .toList();
     totalNewConfirmedLastWeak.sort((a, b) => a.date!.day.compareTo(b.date!.day));
+    totalNewConfirmedBarGroups.clear();
     for (GlobalSummary summary in totalNewConfirmedLastWeak) {
       totalNewConfirmedBarGroups.add(BarChartGroupData(
           x: summary.date!.day,

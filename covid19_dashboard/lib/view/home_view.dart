@@ -15,10 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../core/model/country_model.dart';
 
 class HomeView extends StatelessWidget {
-
-   HomeController homeController = Get.find();
-
-
+  HomeController homeController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -48,41 +45,57 @@ class HomeView extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 1,
-                        child: GetBuilder<HomeController>(
-                            builder: (controller) {
-                              return homeController.gettingCountriesLoading
-                                  ? LoadingWidget()
-                                  : SizedBox(height: maxHeight*0.06,
-                                    child: DropdownButtonFormField<Country>(
-                                        value: homeController.selectedCountry,
-                                        isExpanded: true,
-                                        decoration: InputDecoration(contentPadding: EdgeInsets.all(10),
-                                            fillColor: Colors.white,
-                                            filled: true,
-                                            border: OutlineInputBorder(borderSide: BorderSide.none,
-                                                borderRadius:
-                                                    BorderRadius.circular(45))),
-                                        items: homeController.countries
-                                            .map((e) => DropdownMenuItem(
-                                                  child: Text(
-                                                    e.iso2.toString(),
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline3!
-                                                        .copyWith(
-                                                            color: Colors.black),
-                                                  ),
-                                                  value: e,
-                                                ))
-                                            .toList(),
-                                        onChanged: (value) {
-                                          homeController.selectedCountry = value!;
-                                          SummaryController summaryController = Get.find();
+                        child:
+                            GetBuilder<HomeController>(builder: (controller) {
+                          return homeController.gettingCountriesLoading
+                              ? LoadingWidget()
+                              : SizedBox(
+                                  height: maxHeight * 0.06,
+                                  child: homeController.countries.isEmpty
+                                      ? ContactButton(
+                                          maxHeight: maxHeight,
+                                          maxWidth: maxWidth,
+                                          icon: Icon(Icons.refresh),
+                                          text: 'Reload',
+                                          onTap: ()=>homeController.getCountries())
+                                      : DropdownButtonFormField<Country>(
+                                          value: homeController.selectedCountry,
+                                          isExpanded: true,
+                                          decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.all(10),
+                                              fillColor: Colors.white,
+                                              filled: true,
+                                              border: OutlineInputBorder(
+                                                  borderSide: BorderSide.none,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          45))),
+                                          items: homeController.countries
+                                              .map((e) => DropdownMenuItem(
+                                                    child: Text(
+                                                      e.iso2.toString(),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline3!
+                                                          .copyWith(
+                                                              color:
+                                                                  Colors.black),
+                                                    ),
+                                                    value: e,
+                                                  ))
+                                              .toList(),
+                                          onChanged: (value) {
+                                            homeController.selectedCountry =
+                                                value!;
+                                            SummaryController
+                                                summaryController = Get.find();
 
-                                          summaryController.getGlobalSummary();
-                                        }),
-                                  );
-                            }),
+                                            summaryController
+                                                .getGlobalSummary();
+                                          }),
+                                );
+                        }),
                       )
                     ],
                   ),
@@ -101,7 +114,7 @@ class HomeView extends StatelessWidget {
                         maxHeight: maxHeight,
                         maxWidth: maxWidth,
                         text: "Call Now",
-                        onTap: () =>homeController.makePhoneCall(),
+                        onTap: () => homeController.makePhoneCall(),
                         icon: Icon(
                           Icons.call,
                           size: 25.w,
@@ -111,7 +124,7 @@ class HomeView extends StatelessWidget {
                       ContactButton(
                         maxHeight: maxHeight,
                         maxWidth: maxWidth,
-                        onTap: ()=>homeController.launchWhatsApp(),
+                        onTap: () => homeController.launchWhatsApp(),
                         text: "WhatsApp",
                         color: CustomColors.green,
                         icon: ImageIcon(
